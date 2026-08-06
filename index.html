@@ -118,10 +118,13 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;}
 .ct-sec-label{font-size:12px;letter-spacing:0.25em;color:#bbb;margin-bottom:12px;}
 .ct-sec-title{font-size:22px;font-weight:700;color:#1e0c04;margin-bottom:4px;}
 .ct-sec-sub{font-size:13px;color:#bbb;letter-spacing:0.04em;}
-.day-tabs{display:flex;gap:10px;justify-content:center;padding:24px 32px 0;}
-.day-tab{padding:9px 32px;border-radius:28px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #e0ccc0;color:#bbb;background:#fff;transition:all 0.2s;}
-.day-tab.active{background:#c94a10;border-color:#c94a10;color:#fff;}
-.day-tab:not(.active){background:#ff8c42;border-color:#ff8c42;color:#fff;}
+.day-tabs{display:flex;justify-content:center;padding:24px 32px 0;}
+.day-tabs-group{display:inline-flex;background:#f0dcce;border-radius:28px;padding:4px;gap:2px;}
+.day-tab{padding:9px 30px;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:0.04em;cursor:pointer;border:none;color:#a58a78;background:none;transition:all 0.2s;}
+.day-tab.active{background:#c94a10;color:#fff;box-shadow:0 2px 8px rgba(201,74,16,0.25);}
+.day-next{display:flex;justify-content:center;margin-top:32px;padding:0 24px;}
+.day-next-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 30px;border-radius:24px;border:1.5px solid #c94a10;color:#c94a10;background:#fff8f5;font-size:13px;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.day-next-btn:hover{background:#c94a10;color:#fff;}
 .day-concept{text-align:center;font-weight:700;font-size:18px;color:#1e0c04;padding:16px 24px 4px;letter-spacing:0.04em;}
 .ct-inner{max-width:720px;margin:0 auto;padding:32px 32px 0;}
 .day-panel{display:none;}.day-panel.show{display:block;}
@@ -319,8 +322,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;}
     <div class="ct-sec-sub">2026年9月28日（月）12:00 — 9月29日（火）13:45</div>
   </div>
   <div class="day-tabs">
-    <div class="day-tab active" onclick="sw('day1',this)">DAY 1</div>
-    <div class="day-tab" onclick="sw('day2',this)">DAY 2</div>
+    <div class="day-tabs-group">
+      <div class="day-tab active" id="tab-day1" onclick="sw('day1',this)">DAY 1</div>
+      <div class="day-tab" id="tab-day2" onclick="sw('day2',this)">DAY 2</div>
+    </div>
   </div>
   <div class="day-concept" id="concept-day1">DAY1. 地域というフィールドに飛び込む</div>
   <div class="day-concept" id="concept-day2" style="display:none">DAY2：日本の地域の未来を構想する</div>
@@ -377,6 +382,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;}
           </div>
         </div>
       </div>
+      <div class="day-next">
+        <button class="day-next-btn" onclick="sw('day2', document.getElementById('tab-day2'))">→DAY2のスケジュール</button>
+      </div>
     </div>
     <div class="day-panel" id="day2">
       <div style="max-width:760px;margin:0 auto 32px;padding:0 24px;">
@@ -426,6 +434,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;}
             <div class="tl-title">クロージング</div>
           </div>
         </div>
+      </div>
+      <div class="day-next">
+        <button class="day-next-btn" onclick="sw('day1', document.getElementById('tab-day1'))">→DAY1のスケジュール</button>
       </div>
     </div>
   </div>
@@ -581,6 +592,7 @@ function sw(id, el) {
   document.getElementById('concept-' + id).style.display = '';
   document.querySelectorAll('.day-tab').forEach(function(t) { t.classList.remove('active'); });
   el.classList.add('active');
+  document.getElementById('timetable').scrollIntoView({behavior:'smooth', block:'start'});
 }
 const hamburger = document.getElementById('hamburger');
 const drawer = document.getElementById('drawer');
