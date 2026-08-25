@@ -117,6 +117,22 @@ body{
   font-size:13px;color:var(--brown-soft);line-height:2;
 }
 
+/* 一覧の最後：LPへ戻る導線。主役ではないので控えめに */
+.back-wrap{text-align:center;margin-top:44px;}
+.back-link{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--orange-deep);
+  border:1px solid rgba(255,255,255,0.25);border-radius:40px;
+  padding:14px 32px;
+  font-size:14px;font-weight:700;color:#fff;
+  text-decoration:none;letter-spacing:0.04em;
+  box-shadow:0 4px 18px rgba(120,50,20,0.25);
+  transition:background 0.2s,box-shadow 0.2s;
+}
+.back-link:hover{background:#b04020;box-shadow:0 6px 22px rgba(120,50,20,0.34);}
+.back-link:focus-visible{outline:2px solid var(--brown);outline-offset:3px;}
+.back-link .chev{font-size:11px;opacity:0.8;}
+
 .status{
   display:flex;align-items:center;justify-content:center;gap:8px;
   margin-top:44px;font-size:11px;color:var(--muted);letter-spacing:0.04em;
@@ -169,6 +185,13 @@ body{
   .avatar{width:74px;height:74px;margin-bottom:12px;}
   .avatar-initials{font-size:21px;}
   .card-name{font-size:14px;}
+  .back-link{width:82%;max-width:340px;justify-content:center;padding:14px 20px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .card{animation:none;opacity:1;}
+  .card:hover{transform:none;}
+  .dot.loading{animation:none;}
 }
 </style>
 </head>
@@ -192,6 +215,10 @@ body{
   <div class="status">
     <span class="dot" id="statusDot"></span>
     <span id="statusText">準備中</span>
+  </div>
+
+  <div class="back-wrap">
+    <a class="back-link" href="../"><span class="chev" aria-hidden="true">◀</span>ENJIN LOCAL ＠福井 へ戻る</a>
   </div>
 
 </div>
