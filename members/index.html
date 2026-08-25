@@ -1,3 +1,355 @@
 <!DOCTYPE html>
 <html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ENJIN LOCAL ＠福井 — 参加者一覧</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --brown:#1e0c04;        /* LPの基調色（濃茶） */
+  --brown-soft:#5a4a42;
+  --muted:#8a7a72;
+  --orange:#ff8c42;
+  --orange-deep:#c94a10;
+  --card:#ffffff;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--brown);
+  background:#fff5ee;
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── 背景（LPと同じ淡いオレンジ） ── */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.bg-layer img{width:100%;height:100%;object-fit:cover;}
+
+.wrap{position:relative;z-index:2;max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+
+/* ── ヘッダー ── */
+.site-header{padding:56px 0 40px;text-align:center;}
+.site-header img.logo{width:min(240px,52vw);height:auto;display:block;margin:0 auto 26px;}
+.header-label{
+  display:inline-block;font-family:'Nunito Sans',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:0.28em;
+  color:var(--orange-deep);
+  background:rgba(255,255,255,0.88);
+  border:1px solid rgba(201,74,16,0.25);border-radius:20px;
+  padding:7px 20px;margin-bottom:18px;
+}
+.header-title{
+  font-size:clamp(20px,3.4vw,26px);font-weight:700;line-height:1.5;margin-bottom:10px;
+  text-shadow:0 1px 14px rgba(255,255,255,0.7);
+}
+.header-sub{
+  font-size:13px;font-weight:500;color:var(--brown);opacity:0.75;line-height:1.9;
+  text-shadow:0 1px 12px rgba(255,255,255,0.7);
+}
+
+/* ── グリッド ── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(178px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid rgba(201,74,16,0.10);
+  border-radius:18px;
+  padding:26px 16px 22px;
+  text-align:center;
+  box-shadow:0 4px 20px rgba(120,50,20,0.09);
+  transition:transform 0.25s ease,box-shadow 0.25s ease;
+  opacity:0;
+  animation:rise 0.5s ease forwards;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(120,50,20,0.16);}
+
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* 参加者はこれから増える、と伝えるための枠 */
+.card-more{
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.42);
+  border:2px dashed rgba(201,74,16,0.30);
+  box-shadow:none;
+  color:var(--orange-deep);
+  font-family:'Nunito Sans','Noto Sans JP',sans-serif;
+  font-size:15px;font-weight:700;letter-spacing:0.04em;
+  min-height:150px;
+}
+.card-more:hover{transform:none;box-shadow:none;}
+
+.avatar{
+  position:relative;
+  width:92px;height:92px;border-radius:50%;
+  margin:0 auto 16px;
+  overflow:hidden;
+  background:linear-gradient(150deg,#ffd9bf,#ffb98a);
+  box-shadow:0 0 0 3px #fff,0 0 0 4px rgba(201,74,16,0.22);
+  display:flex;align-items:center;justify-content:center;
+}
+.avatar-initials{
+  font-size:26px;font-weight:700;color:rgba(201,74,16,0.75);
+  letter-spacing:0.02em;user-select:none;
+}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+.card-org{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:3px;}
+.card-role{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:9px;}
+.card-name{font-size:16px;font-weight:700;line-height:1.4;}
+.card-name span{font-size:11px;font-weight:300;margin-left:3px;opacity:0.65;}
+
+/* ── 状態表示 ── */
+.state{
+  grid-column:1/-1;
+  text-align:center;padding:70px 20px;
+  font-size:13px;color:var(--brown-soft);line-height:2;
+}
+
+.status{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:44px;font-size:11px;color:var(--muted);letter-spacing:0.04em;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+.dot.live{background:#2fa860;}
+.dot.loading{background:var(--orange);animation:blink 1s ease-in-out infinite;}
+.dot.error{background:#d9432f;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.25;}}
+
+/* ── 設定 ── */
+.gear{
+  position:fixed;right:18px;bottom:18px;z-index:50;
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(201,74,16,0.2);background:rgba(255,255,255,0.9);
+  color:var(--orange-deep);font-size:17px;cursor:pointer;
+  box-shadow:0 3px 12px rgba(120,50,20,0.16);
+  backdrop-filter:blur(6px);
+}
+.overlay{
+  display:none;position:fixed;inset:0;z-index:60;
+  background:rgba(30,12,4,0.45);
+  align-items:center;justify-content:center;padding:24px;
+}
+.overlay.open{display:flex;}
+.sheet{
+  background:#fff;border-radius:18px;padding:28px;
+  width:100%;max-width:460px;
+  box-shadow:0 20px 60px rgba(30,12,4,0.3);
+}
+.sheet h2{font-size:15px;font-weight:700;margin-bottom:6px;}
+.sheet p.note{font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:20px;}
+.sheet label{display:block;font-size:11px;font-weight:500;color:var(--brown-soft);margin-bottom:6px;}
+.sheet input{
+  width:100%;padding:10px 12px;margin-bottom:16px;
+  border:1px solid rgba(30,12,4,0.15);border-radius:9px;
+  font-family:inherit;font-size:13px;color:var(--brown);
+}
+.sheet input:focus{outline:none;border-color:var(--orange);}
+.sheet-actions{display:flex;gap:10px;justify-content:flex-end;}
+.btn{padding:9px 20px;border-radius:20px;border:none;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+.btn.ghost{background:none;color:var(--brown-soft);}
+.btn.solid{background:#321c13;color:#fff;}
+
+@media (max-width:600px){
+  .wrap{padding:0 16px 60px;}
+  .site-header{padding:38px 0 30px;}
+  .grid{grid-template-columns:repeat(2,1fr);gap:14px;}
+  .card{padding:20px 10px 18px;border-radius:15px;}
+  .avatar{width:74px;height:74px;margin-bottom:12px;}
+  .avatar-initials{font-size:21px;}
+  .card-name{font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"><img src="bg.jpg" alt=""></div>
+
+<div class="wrap">
+
+  <header class="site-header">
+    <img class="logo" src="enjin-local-logo.png" alt="ENJIN LOCAL">
+    <div class="header-label">PARTICIPANTS</div>
+    <h1 class="header-title">参加予定の皆様</h1>
+    <p class="header-sub">9/28（月）〜 9/29（火）　ENJIN LOCAL ＠福井</p>
+  </header>
+
+  <main class="grid" id="grid">
+    <div class="state">読み込んでいます…</div>
+  </main>
+
+  <div class="status">
+    <span class="dot" id="statusDot"></span>
+    <span id="statusText">準備中</span>
+  </div>
+
+</div>
+
+<button class="gear" id="gear" onclick="openSettings()" title="データソース設定">⚙</button>
+
+<div class="overlay" id="overlay" onclick="bgClose(event)">
+  <div class="sheet">
+    <h2>データソース設定</h2>
+    <p class="note">「WEB掲載情報」スプレッドシートに紐付けたGASウェブアプリのURLを入れてください。この設定はこの端末のブラウザにだけ保存されます。</p>
+    <label for="gasUrl">GAS ウェブアプリ URL</label>
+    <input type="url" id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec">
+    <label for="intervalSec">自動更新の間隔（秒）</label>
+    <input type="number" id="intervalSec" min="10" step="10">
+    <div class="sheet-actions">
+      <button class="btn ghost" onclick="closeSettings()">キャンセル</button>
+      <button class="btn solid" onclick="saveSettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// GASをデプロイしたら、下の DEFAULT_GAS_URL に発行された /exec のURLを入れる
+const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbz4ILRT3IQDeTpJcORQaiJdVCwd0AiPcZ2oczSctBFkNUvMFmZbTeZRjgL0YnFpCkU/exec';
+const STORAGE_KEY = 'enjin_local_fukui_members';
+
+let config = { gasUrl: DEFAULT_GAS_URL, intervalSec: 30 };
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if (saved.gasUrl) config.gasUrl = saved.gasUrl;
+  if (saved.intervalSec) config.intervalSec = saved.intervalSec;
+} catch (e) {}
+
+let intervalId = null;
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[c]);
+}
+
+// 名前の頭2文字（写真がない人のフォールバック）
+// 「半澤 節」→「半澤」。姓の頭+名の頭だと日本語名では不自然になるので使わない
+function initials(name) {
+  const compact = String(name).replace(/[\s　]+/g, '');
+  return compact.slice(0, 2);
+}
+
+// Driveの共有リンクを、そのまま表示できるサムネイルURLに変換する
+function driveThumb(url) {
+  if (!url) return '';
+  const m1 = url.match(/\/d\/([\w-]+)/);
+  if (m1) return 'https://drive.google.com/thumbnail?id=' + m1[1] + '&sz=w400';
+  const m2 = url.match(/[?&]id=([\w-]+)/);
+  if (m2) return 'https://drive.google.com/thumbnail?id=' + m2[1] + '&sz=w400';
+  return url;
+}
+
+// Driveのサムネイルは混み合うと一時的に落ちることがあるので、1度だけ取り直す
+function retryPhoto(img) {
+  const n = parseInt(img.dataset.retried || '0', 10);
+  if (n >= 2) { img.remove(); return; }   // 2回試してだめならイニシャル表示のまま
+  img.dataset.retried = String(n + 1);
+  // 前回付けたキャッシュ避けパラメータを取り除いてから付け直す
+  const clean = img.src.replace(/[?&]r=\d+/g, '');
+  const sep = clean.includes('?') ? '&' : '?';
+  setTimeout(() => { img.src = clean + sep + 'r=' + Date.now(); }, 2000 + n * 2500 + Math.random() * 800);
+}
+
+function setStatus(state, text) {
+  document.getElementById('statusDot').className = 'dot ' + state;
+  document.getElementById('statusText').textContent = text;
+}
+
+function renderGrid(data) {
+  const grid = document.getElementById('grid');
+  const list = data.participants || [];
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="state">「WEB掲載情報」シートに参加者を追加すると<br>ここに表示されます</div>';
+    return;
+  }
+
+  // スプレッドシートの行順（上から）に並べる
+  const sorted = [...list].sort((a, b) => (a.rowIndex ?? a.id) - (b.rowIndex ?? b.id));
+
+  grid.innerHTML = sorted.map((p, i) => {
+    const photoUrl = driveThumb(p.photo);
+    const delay = Math.min(i * 40, 700);
+    return `
+      <div class="card" style="animation-delay:${delay}ms">
+        <div class="avatar">
+          <span class="avatar-initials">${esc(initials(p.name || '?'))}</span>
+          ${photoUrl ? `<img src="${esc(photoUrl)}" alt="${esc(p.name)}" loading="lazy"
+             onload="this.previousElementSibling.style.display='none'" onerror="retryPhoto(this)">` : ''}
+        </div>
+        ${p.org ? `<div class="card-org">${esc(p.org)}</div>` : ''}
+        ${p.role ? `<div class="card-role">${esc(p.role)}</div>` : ''}
+        <div class="card-name">${esc(p.name || '—')}<span>さん</span></div>
+      </div>`;
+  }).join('') + `
+      <div class="card card-more" style="animation-delay:${Math.min(sorted.length * 40, 700) + 80}ms">
+        and more・・・！
+      </div>`;
+}
+
+async function fetchData() {
+  const url = config.gasUrl;
+  if (!url) {
+    setStatus('', '右下の ⚙ からデータソースを設定してください');
+    document.getElementById('grid').innerHTML =
+      '<div class="state">⚙ ボタンから GAS のURLを設定してください</div>';
+    return;
+  }
+
+  setStatus('loading', '更新中…');
+  try {
+    const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    renderGrid(data);
+    const hm = new Date(data.updatedAt).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+    setStatus('live', `最終更新 ${hm}　·　自動更新中`);
+  } catch (e) {
+    setStatus('error', 'データを取得できませんでした');
+    console.error(e);
+  }
+}
+
+function startPolling() {
+  if (intervalId) clearInterval(intervalId);
+  fetchData();
+  const sec = Math.max(10, parseInt(config.intervalSec) || 30);
+  intervalId = setInterval(fetchData, sec * 1000);
+}
+
+function openSettings() {
+  document.getElementById('gasUrl').value = config.gasUrl || '';
+  document.getElementById('intervalSec').value = config.intervalSec || 30;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('overlay').classList.remove('open');
+}
+function bgClose(e) {
+  if (e.target === document.getElementById('overlay')) closeSettings();
+}
+function saveSettings() {
+  config.gasUrl = document.getElementById('gasUrl').value.trim();
+  config.intervalSec = parseInt(document.getElementById('intervalSec').value) || 30;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(config)); } catch (e) {}
+  closeSettings();
+  startPolling();
+}
+
+startPolling();
+</script>
+</body>
 </html>
