@@ -75,6 +75,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;overflow-x:hidden;
 .cta-btn-wrap{margin-bottom:0;}
 .cta-btn{display:inline-flex;align-items:center;gap:14px;background:#321c13;border:1px solid rgba(255,255,255,0.2);border-radius:40px;padding:16px 36px;font-size:16px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.06em;transition:opacity 0.2s;box-shadow:0 6px 24px rgba(0,0,0,0.4);}
 .cta-btn:hover{opacity:0.88;}
+
+/* MEMBER下：参加者一覧への導線。すぐ下の招待リクエストが主役なので、こちらは控えめに */
+.member-more{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.55);border-radius:40px;padding:14px 32px;font-size:15px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em;backdrop-filter:blur(4px);transition:background 0.2s;}
+.member-more:hover{background:rgba(255,255,255,0.28);}
+.member-more .chev{font-size:12px;opacity:0.75;}
 .cta-badge{background:#fff;color:#c94a10;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:0.08em;white-space:nowrap;}
 
 /* ── ORGANIZER：Mapの下、元のオレンジ背景（lp-bgをそのまま活かす） ── */
@@ -233,6 +238,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;overflow-x:hidden;
   .pioneers-grid{grid-template-columns:1fr!important;padding:0 16px 20px!important;}
   .voice-grid{grid-template-columns:1fr!important;padding:0 16px 20px!important;}
   .cta-btn{font-size:14px;padding:14px 24px;width:82%;max-width:340px;justify-content:center;}
+  .member-more{font-size:14px;padding:13px 22px;width:82%;max-width:340px;justify-content:center;}
   .cta-wrap{padding:64px 24px 100px;}
   .member-sec{padding:72px 0 0;}
   .lp-voice-cta{padding:60px 16px 100px;}
@@ -356,6 +362,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff5ee;overflow-x:hidden;
     </div>
   </div>
   <div style="text-align:center;margin-top:24px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:0.04em;">and more…！</div>
+  <div style="text-align:center;margin-top:30px;">
+    <a class="member-more" href="https://enjin-pj.github.io/enjin-local/members/">参加メンバーをもっと見る<span class="chev" aria-hidden="true">▶</span></a>
+  </div>
 </section>
 
 <!-- CTA -->
